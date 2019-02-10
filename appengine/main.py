@@ -14,11 +14,14 @@
 
 # [START gae_python37_app]
 
+
+from flask import Flask, render_template, request
+from flask_basicauth import BasicAuth
+import urllib.request
 import os
 
-from flask import Flask
-from flask import render_template
-from flask_basicauth import BasicAuth
+from utils import standard_logger
+
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -30,13 +33,28 @@ app.config['BASIC_AUTH_FORCE'] = True
 # or decorate a route with @basic_auth.required
 
 basic_auth = BasicAuth(app)
-
+logger = standard_logger(__name__, debug=True)
 
 
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
     return render_template('index.html', api_key=os.getenv("NEWSAPI_KEY"))
+
+
+@app.route('/api/newsapi/v2/everything')
+def newsapi_v2_everything():
+    api_url = "https://newsapi.org/v2/everything?" + str(request.query_string, "utf-8")
+    logger.debug("Retrieving from %s" % api_url)
+    response = urllib.request.urlopen(api_url)
+    logger.debug("HTTP %d %s, %s" % (response.status, response.msg, response.getheader('Content-Type')))
+    #header = "".join(["%s: %s\n" % (h, v) for (h, v) in response.getheaders()])
+    response = app.response_class(
+        response=response.read(),
+        status=response.status,
+        mimetype=response.getheader('Content-Type')
+    )
+    return response
 
 
 if __name__ == '__main__':
