@@ -25,41 +25,41 @@
   .iconfb{
     color:#3B5998;
     position:relative;
-    top:5px;    
+    top:5px;
   }
   </style>
 </head>
-<body> 
+<body>
   <div class="container">
-  <div class="row">    
+  <div class="row">
     <form id="f" class="col s12">
-      <h4>Show me 
+      <h4>Show me
           <span class="input-field">
               <select>
-                
+
                 <option value="1">Latest</option>
                 <option value="2">Most Relevant</option>
                 <option value="3">Most Popular</option>
               </select>
               <label>Materialize Select</label>
             </span>
-        
+
         News</h4>
       <div class="row">
-        <div class="input-field col s12 l6">  
+        <div class="input-field col s12 l6">
           <p>Show me</p>
-          <div class="chip sort teal lighten-2">Latest</div>            
+          <div class="chip sort teal lighten-2">Latest</div>
           <div class="chip sort">Most Relevant</div>
-          <div class="chip sort">Most Popular</div>          
+          <div class="chip sort">Most Popular</div>
         </div>
       </div>
       <div class="row">
-          <div class="input-field col s12 l6">  
+          <div class="input-field col s12 l6">
             <p>Pre-selected topics</p>
-            <div class="chip topic">Best for Britain</div>            
+            <div class="chip topic">Best for Britain</div>
             <div class="chip topic">Brexit</div>
             <div class="chip topic">DexEU</div>
-            <div class="chip topic">Eloise Todd</div>            
+            <div class="chip topic">Eloise Todd</div>
             <div class="chip topic">People's Vote</div>
           </div>
       </div>
@@ -67,28 +67,28 @@
           <p>Show me</p>
           <div class="chip filter">Most Popular Today</div>
           <div class="chip filter">Relevance</div>
-          <div class="chip filter">Recent</div>          
+          <div class="chip filter">Recent</div>
       </div> -->
       <div class="row">
-        
+
         <div class="input-field col s12 l6">
           <input id="qsearch" type="text" class="autocomplete">
           <label for="qsearch"><i class="material-icons">search</i>   Click above or search here</label>
         </div>
         <div class="col s6">
-                    
+
         </div>
       </div>
       <a id="sub" style="visibility:hidden" class="waves-effect waves-light btn">Go!</a>
-      
-      
+
+
     </form>
-  </div>  
+  </div>
   <div id ="1row" class=row></div>
   <div id ="2row" class=row></div>
   <div id ="3row" class=row></div>
   <div id ="4row" class=row></div>
-  <div id ="5row" class=row></div> 
+  <div id ="5row" class=row></div>
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -99,14 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
 var today = new Date();
 var dd = today.getDate();
 
-var mm = today.getMonth()+1; 
+var mm = today.getMonth()+1;
 var yyyy = today.getFullYear();
-if(dd<10) 
+if(dd<10)
 {
     dd='0'+dd;
-} 
+}
 
-if(mm<10) 
+if(mm<10)
 {
     mm='0'+mm;
 }
@@ -133,17 +133,17 @@ function findNews(qsearch){
     console.log("done");
     console.log(data.articles);
     c=1;
-    for (i=0;i<data.articles.length;i++){      
+    for (i=0;i<data.articles.length;i++){
       console.log("Adding article "+ i);
-      a = data.articles[i].publishedAt.split("T");    
-      var d = new Date(a[0] + " " + a[1]);    
-      var present = Date.now();    
+      a = data.articles[i].publishedAt.split("T");
+      var d = new Date(a[0] + " " + a[1]);
+      var present = Date.now();
       ms = present-d.getTime();
       min = Math.round(ms/60000);
       hr = Math.round(min/60);
       if(hr<1) {s = min + " minutes ago";}
       else {s = hr + " hours ago";}
-      
+
       $( "#" + c + "row" ).append( "<div id='news"+i + "' class='col s12 m6 newsarticle'><div class='card medium'><div class='card-image'><img src='"+ data.articles[i].urlToImage +"'><span class='card-title headline'><a target='_blank' href='" + data.articles[i].url + "'>" + data.articles[i].source.name + "</a></span></div><div class='card-content'><p id='desctext'><a target='_blank' href='" + data.articles[i].url + "'><i style='color:grey'>" + s + "</i><br>" + data.articles[i].title.substring(0,100) + "</a></p></div></div></div>" );
       if((i+1)%4==0) {
         c+=1;
@@ -151,17 +151,17 @@ function findNews(qsearch){
     }
     console.log("finished adding. Now finding shares");
     for (i=0;i<data.articles.length;i++){
-      c=0; 
+      c=0;
       $.sharedCount(data.articles[i].url, function(data){
-          //console.log("#news"+ c + " #desctext Facebook Shares " + data.Facebook.total_count);          
+          //console.log("#news"+ c + " #desctext Facebook Shares " + data.Facebook.total_count);
           $("#news"+ c + " #desctext").append("<br><i style='color:#3B5998' class='iconfb material-icons'>screen_share</i> <b>" + data.Facebook.total_count + "</b> shares");
           $("#news"+ c + " #desctext").append("<br><i  style='color:#3B5998' class='iconfb material-icons'>comment</i> <b>" + data.Facebook.comment_count + "</b> comments");
-          c++; 
+          c++;
           $("#sharedcount").fadeIn();
-          
+
       });
     }
-    
+
   });
 };
 
@@ -185,15 +185,15 @@ $( ".sort" ).click(function() {
 
 $( "#sub" ).click(function() {
   qsearch=$('#qsearch').val();
-  findNews(qsearch);  
+  findNews(qsearch);
 });
 
-$( "#qsearch" ).click(function() {  
-  $("#sub").css("visibility","visible");  
+$( "#qsearch" ).click(function() {
+  $("#sub").css("visibility","visible");
 });
 
 $(function() {
-    console.log( "ready!" ); 
+    console.log( "ready!" );
     $('input.autocomplete').autocomplete({
       data: {
         "Adam Afriyie MP": '/static/politician.png',
@@ -1491,7 +1491,7 @@ jQuery.sharedCount = function(url, fn) {
         arg.dataType += "p";
     }
     return jQuery.ajax(arg);
-}; 
+};
 
 
 </script>
