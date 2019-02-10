@@ -122,7 +122,7 @@ function findNews(qsearch){
   $(".newsarticle").remove();
   console.log("cleared old search");
 
-  var newsAPI = "/api/newsapi/v2/everything?sortBy="+ sortby + "&apiKey={{ api_key }}&language=en&q=" + qsearch;
+  var newsAPI = "https://newsapi.org/v2/everything?sortBy="+ sortby + "&apiKey={{ api_key }}&language=en&q=" + qsearch;
   // sources=google-news-in,the-hindu,the-times-of-india
   console.log(newsAPI);
   console.log(sortby);
