@@ -17,8 +17,10 @@
 
 from flask import Flask, render_template, request
 from flask_basicauth import BasicAuth
+from datetime import datetime
 import urllib.request
 import os
+from google.cloud import firestore
 
 from utils import standard_logger
 
@@ -34,6 +36,7 @@ app.config['BASIC_AUTH_FORCE'] = True
 
 basic_auth = BasicAuth(app)
 logger = standard_logger(__name__, debug=True)
+db = firestore.Client()
 
 
 @app.route('/')
@@ -55,6 +58,18 @@ def newsapi_v2_everything():
         mimetype=response.getheader('Content-Type')
     )
     return response
+
+
+@app.route('/firestore')
+def firestore():
+    doc_ref = db.collection(u'articles').document(u'brexit')
+    doc_ref.set({
+        u'first': u'Ada',
+        u'last': u'Lovelace',
+        u'born': 1815,
+        u'date': datetime.now()
+    })
+    return "YEEESSS"
 
 
 if __name__ == '__main__':
