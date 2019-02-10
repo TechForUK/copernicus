@@ -18,10 +18,19 @@ import os
 
 from flask import Flask
 from flask import render_template
+from flask_basicauth import BasicAuth
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = Flask(__name__, static_url_path="/static")
+
+app.config['BASIC_AUTH_USERNAME'] = 'hello'
+app.config['BASIC_AUTH_PASSWORD'] = 'there'
+app.config['BASIC_AUTH_FORCE'] = True
+# or decorate a route with @basic_auth.required
+
+basic_auth = BasicAuth(app)
+
 
 
 @app.route('/')
