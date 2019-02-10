@@ -1,1 +1,3 @@
 /appengine/creds.yaml
+/appengine/__pycache__
+/appengine/.python-version
