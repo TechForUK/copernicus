@@ -24,8 +24,8 @@ from flask_basicauth import BasicAuth
 # called `app` in `main.py`.
 app = Flask(__name__, static_url_path="/static")
 
-app.config['BASIC_AUTH_USERNAME'] = 'hello'
-app.config['BASIC_AUTH_PASSWORD'] = 'there'
+app.config['BASIC_AUTH_USERNAME'] = os.getenv("BASIC_AUTH_USERNAME")
+app.config['BASIC_AUTH_PASSWORD'] = os.getenv("BASIC_AUTH_PASSWORD")
 app.config['BASIC_AUTH_FORCE'] = True
 # or decorate a route with @basic_auth.required
 

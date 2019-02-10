@@ -1,2 +1,4 @@
 env_variables:
   NEWSAPI_KEY: '123456789abcdef...'
+  BASIC_AUTH_USERNAME: 'hello'
+  BASIC_AUTH_PASSWORD: 'there'
